@@ -9,6 +9,13 @@ from sklearn.preprocessing import StandardScaler, OrdinalEncoder, OneHotEncoder
 csv_path = os.path.join(os.path.dirname(__file__), "heart.csv")
 data = pd.read_csv(csv_path)
 
+# Remove duplicate rows to prevent data leakage between train and test sets
+# Original dataset has 1025 rows but only 302 unique rows (723 duplicates!)
+n_before = len(data)
+data = data.drop_duplicates().reset_index(drop=True)
+n_after = len(data)
+print(f"[Data] Removed {n_before - n_after} duplicate rows: {n_before} -> {n_after}")
+
 target = "target"
 x = data.drop(target, axis=1)
 y = data[target]

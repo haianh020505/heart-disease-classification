@@ -1,58 +1,307 @@
-# BÁO CÁO DỰ ÁN: PHÂN LOẠI VÀ DỰ ĐOÁN NGUY CƠ MẮC BỆNH TIM
+# ❤️ Heart Disease Classification and Prediction
 
 Dự án thuộc môn học: **Nhập môn Trí tuệ Nhân tạo - IT3160**
 
-### 👥 Nhóm thực hiện
-1. **Lê Hải Anh** - 20236019
-2. **Lương Hương Giang** - 20236027
-3. **Dương Gia Huy** - 20236035
-4. **Nguyễn Nhật Linh** - 20236040
-5. **Nguyễn Quang Linh** - 20236041
+## 👥 Nhóm thực hiện
+
+| Họ và tên         | MSSV     |
+| ----------------- | -------- |
+| Lê Hải Anh        | 20236019 |
+| Lương Hương Giang | 20236027 |
+| Dương Gia Huy     | 20236035 |
+| Nguyễn Nhật Linh  | 20236040 |
+| Nguyễn Quang Linh | 20236041 |
 
 ---
 
-## 📌 1. Bối cảnh & Mục tiêu
-* **Bối cảnh**: Bệnh tim mạch là nguyên nhân tử vong hàng đầu toàn cầu. Phát hiện sớm giúp can thiệp kịp thời, giảm tỷ lệ tử vong và hỗ trợ bác sĩ chẩn đoán lâm sàng.
-* **Bài toán**: Phân loại nhị phân (Binary Classification) để dự đoán nguy cơ mắc bệnh tim (Có / Không).
-* **Mục tiêu**: Tự động hóa dự đoán nguy cơ dựa trên 13 chỉ số sức khỏe, hỗ trợ ra quyết định lâm sàng (không thay thế bác sĩ chuyên khoa).
+# 📌 1. Giới thiệu dự án
+
+Bệnh tim mạch là một trong những nguyên nhân gây tử vong hàng đầu trên thế giới. Việc phát hiện sớm nguy cơ mắc bệnh tim giúp bác sĩ đưa ra các biện pháp can thiệp kịp thời, nâng cao hiệu quả điều trị và giảm tỷ lệ tử vong.
+
+Dự án này xây dựng một hệ thống ứng dụng trí tuệ nhân tạo nhằm dự đoán nguy cơ mắc bệnh tim dựa trên các chỉ số sức khỏe của bệnh nhân. Hệ thống sử dụng các thuật toán Machine Learning để hỗ trợ đánh giá nguy cơ, từ đó cung cấp thông tin tham khảo cho người dùng và nhân viên y tế.
+
+> ⚠️ Kết quả dự đoán chỉ mang tính chất hỗ trợ tham khảo và không thay thế cho chẩn đoán của bác sĩ chuyên khoa.
 
 ---
 
-## 📊 2. Dữ liệu & Các thuộc tính (Input/Output)
-* **Dataset**: ~303 mẫu và 14 thuộc tính chính (Nguồn: Kaggle Heart Disease Dataset).
-* **Input (13 chỉ số chia làm 6 nhóm)**:
-  1. *Thông tin cá nhân*: Tuổi (`age`), Giới tính (`sex`).
-  2. *Triệu chứng lâm sàng*: Loại đau ngực (`cp`), Đau ngực khi vận động (`exang`).
-  3. *Chỉ số sinh lý & xét nghiệm*: Huyết áp nghỉ (`trestbps`), Cholesterol (`chol`), Đường huyết đói (`fbs`).
-  4. *Hoạt động tim*: Nhịp tim tối đa (`thalach`).
-  5. *Điện tim & kiểm tra chuyên sâu*: Kết quả ECG nghỉ (`restecg`), ST Depression (`oldpeak`), Slope ST (`slope`).
-  6. *Tình trạng mạch máu & máu*: Số mạch máu lớn bị hẹp (`ca`), Thalassemia (`thal`).
-* **Output**:
-  * `0`: Nguy cơ thấp (Không mắc bệnh tim)
-  * `1`: Nguy cơ cao (Có nguy cơ mắc bệnh tim)
+# 🎯 2. Mục tiêu
+
+* Xây dựng mô hình dự đoán nguy cơ mắc bệnh tim từ dữ liệu sức khỏe.
+* So sánh hiệu quả của nhiều thuật toán Machine Learning.
+* Lựa chọn mô hình có hiệu suất tốt nhất để triển khai.
+* Xây dựng ứng dụng Web hỗ trợ người dùng nhập dữ liệu và nhận kết quả dự đoán trực quan.
 
 ---
 
-## ⚙️ 3. Quy trình thực hiện (Pipeline)
-1. **Tiền xử lý dữ liệu**: Xử lý dữ liệu khuyết thiếu (`ca`, `thal`), mã hóa thuộc tính phân loại (categorical encoding) và chuẩn hóa dữ liệu (`StandardScaler`).
-2. **Phân tích dữ liệu (EDA)**: Đánh giá phân phối độ tuổi, nồng độ cholesterol, ma trận tương quan và xác định mức độ quan trọng của các thuộc tính (như `cp`, `thalach`, `oldpeak`).
-3. **Huấn luyện mô hình**: Chia tập dữ liệu (80% Train / 20% Test) kết hợp K-Fold Cross-Validation. Sử dụng các mô hình:
-   * **Logistic Regression** (Phân loại xác suất, baseline tốt)
-   * **Decision Tree** (Cây quyết định dễ giải thích trực quan)
-   * **Random Forest** (Tránh overfitting, cho độ chính xác cao nhất)
-   * **KNN** (Dựa trên khoảng cách lân cận)
-   * **SVM** (Tối ưu hóa siêu phẳng phân tách dữ liệu nhỏ)
-4. **Đánh giá & Chọn mô hình**: Đánh giá dựa trên Accuracy, Precision, Recall và F1-score. Ưu tiên mô hình có chỉ số **Recall** cao để tránh bỏ sót bệnh nhân nguy cơ cao. Độ chính xác đạt khoảng **80% - 90%**.
+# 📊 3. Bộ dữ liệu
+
+## Nguồn dữ liệu
+
+Heart Disease Dataset từ Kaggle.
+
+* Số lượng mẫu: khoảng 303 bệnh nhân.
+* Số lượng thuộc tính: 14 thuộc tính.
+
+## Biến đầu vào (Features)
+
+### Thông tin cá nhân
+
+| Thuộc tính | Mô tả     |
+| ---------- | --------- |
+| age        | Tuổi      |
+| sex        | Giới tính |
+
+### Triệu chứng lâm sàng
+
+| Thuộc tính | Mô tả                      |
+| ---------- | -------------------------- |
+| cp         | Loại đau ngực              |
+| exang      | Đau thắt ngực khi vận động |
+
+### Chỉ số sinh lý và xét nghiệm
+
+| Thuộc tính | Mô tả               |
+| ---------- | ------------------- |
+| trestbps   | Huyết áp khi nghỉ   |
+| chol       | Nồng độ Cholesterol |
+| fbs        | Đường huyết lúc đói |
+
+### Hoạt động tim
+
+| Thuộc tính | Mô tả                    |
+| ---------- | ------------------------ |
+| thalach    | Nhịp tim tối đa đạt được |
+
+### Điện tim và kiểm tra chuyên sâu
+
+| Thuộc tính | Mô tả                        |
+| ---------- | ---------------------------- |
+| restecg    | Kết quả điện tâm đồ khi nghỉ |
+| oldpeak    | ST Depression                |
+| slope      | Độ dốc của đoạn ST           |
+
+### Tình trạng mạch máu và máu
+
+| Thuộc tính | Mô tả                          |
+| ---------- | ------------------------------ |
+| ca         | Số lượng mạch máu lớn bị hẹp   |
+| thal       | Kết quả xét nghiệm Thalassemia |
 
 ---
 
-## 💻 4. Cách chạy dự án
-1. **Cài đặt thư viện**:
-   ```bash
-   pip install -r requirements_web.txt
-   ```
-2. **Khởi chạy ứng dụng Web (Flask)**:
-   ```bash
-   python app.py
-   ```
-3. Truy cập vào địa chỉ [http://127.0.0.1:5000](http://127.0.0.1:5000) trên trình duyệt để sử dụng ứng dụng web.
+## Biến đầu ra (Target)
+
+| Giá trị | Ý nghĩa      |
+| ------- | ------------ |
+| 0       | Nguy cơ thấp |
+| 1       | Nguy cơ cao  |
+
+---
+
+# ⚙️ 4. Quy trình thực hiện
+
+## 1. Tiền xử lý dữ liệu
+
+Các bước xử lý dữ liệu bao gồm:
+
+* Kiểm tra dữ liệu thiếu.
+* Xử lý giá trị khuyết trong các thuộc tính:
+
+  * `ca`
+  * `thal`
+* Mã hóa dữ liệu phân loại.
+* Chuẩn hóa dữ liệu bằng:
+
+  * `StandardScaler`
+
+---
+
+## 2. Phân tích dữ liệu (EDA)
+
+Nhóm tiến hành:
+
+* Phân tích phân phối độ tuổi.
+* Phân tích phân phối cholesterol.
+* Khảo sát sự mất cân bằng dữ liệu.
+* Xây dựng ma trận tương quan.
+* Đánh giá mức độ ảnh hưởng của từng thuộc tính.
+
+Các thuộc tính có ảnh hưởng đáng kể:
+
+* `cp`
+* `thalach`
+* `oldpeak`
+* `ca`
+* `thal`
+
+---
+
+## 3. Huấn luyện mô hình
+
+Dữ liệu được chia:
+
+* 80% Train Set
+* 20% Test Set
+
+Đồng thời sử dụng:
+
+* K-Fold Cross Validation
+
+Các mô hình được thử nghiệm:
+
+### Logistic Regression
+
+* Mô hình phân loại tuyến tính.
+* Dễ triển khai.
+* Làm mô hình baseline.
+
+### Decision Tree
+
+* Dễ giải thích.
+* Trực quan hóa tốt.
+* Có nguy cơ overfitting.
+
+### Random Forest
+
+* Mô hình tổ hợp từ nhiều cây quyết định.
+* Độ chính xác cao.
+* Giảm overfitting.
+
+### K-Nearest Neighbors (KNN)
+
+* Dựa trên khoảng cách giữa các điểm dữ liệu.
+* Hiệu quả với dữ liệu nhỏ.
+
+### Support Vector Machine (SVM)
+
+* Tìm siêu phẳng phân tách tối ưu.
+* Hoạt động tốt trên tập dữ liệu kích thước vừa và nhỏ.
+
+---
+
+## 4. Đánh giá mô hình
+
+Các chỉ số đánh giá:
+
+* Accuracy
+* Precision
+* Recall
+* F1-Score
+
+Trong bài toán y tế, nhóm ưu tiên:
+
+> Recall cao nhằm giảm khả năng bỏ sót các bệnh nhân có nguy cơ mắc bệnh tim.
+
+Kết quả đạt độ chính xác khoảng:
+
+**80% - 90%**
+
+---
+
+# 🌲 5. Mô hình được lựa chọn cuối cùng
+
+Sau quá trình thử nghiệm và đánh giá, nhóm lựa chọn **Random Forest** là mô hình chính thức của hệ thống.
+
+## Lý do lựa chọn
+
+### Độ chính xác cao
+
+Random Forest đạt độ chính xác cao nhất hoặc nằm trong nhóm cao nhất so với các mô hình còn lại.
+
+### Giảm Overfitting
+
+So với Decision Tree đơn lẻ, Random Forest ổn định hơn nhờ sử dụng nhiều cây quyết định.
+
+### Recall tốt
+
+Khả năng phát hiện các trường hợp có nguy cơ mắc bệnh tim tốt hơn, phù hợp với yêu cầu của bài toán y tế.
+
+### Khả năng tổng quát hóa cao
+
+Mô hình hoạt động ổn định trên dữ liệu kiểm thử và dữ liệu mới.
+
+### Hỗ trợ đánh giá mức độ quan trọng của thuộc tính
+
+Random Forest cho phép xác định các yếu tố ảnh hưởng lớn nhất tới dự đoán như:
+
+* cp
+* thalach
+* oldpeak
+* ca
+* thal
+
+---
+
+## Nguyên lý hoạt động
+
+Random Forest là một phương pháp Ensemble Learning sử dụng nhiều cây quyết định.
+
+Quy trình:
+
+1. Tạo nhiều tập dữ liệu ngẫu nhiên bằng Bootstrap Sampling.
+2. Huấn luyện một cây quyết định trên mỗi tập dữ liệu.
+3. Mỗi lần phân tách chỉ sử dụng một tập con thuộc tính ngẫu nhiên.
+4. Các cây đưa ra dự đoán độc lập.
+5. Kết quả cuối cùng được xác định bằng Majority Voting.
+
+Nhờ đó mô hình:
+
+* Giảm phương sai.
+* Tăng độ ổn định.
+* Tăng khả năng dự đoán chính xác.
+
+---
+
+# 🏗️ 6. Kiến trúc hệ thống
+
+```text
+User Input
+     │
+     ▼
+Flask Web Application
+     │
+     ▼
+Data Preprocessing
+     │
+     ▼
+Random Forest Model
+     │
+     ▼
+Prediction Result
+```
+
+Người dùng nhập các thông tin sức khỏe thông qua giao diện Web, dữ liệu được tiền xử lý và đưa vào mô hình Random Forest để dự đoán nguy cơ mắc bệnh tim.
+
+---
+
+# 💻 7. Cách chạy dự án
+
+## Bước 1: Clone repository
+
+```bash
+git clone https://github.com/haianh020505/heart-disease-classification.git
+cd heart-disease-classification
+```
+
+## Bước 2: Cài đặt thư viện
+
+```bash
+pip install -r requirements_web.txt
+```
+
+## Bước 3: Chạy ứng dụng Flask
+
+```bash
+python app.py
+```
+
+## Bước 4: Truy cập ứng dụng
+
+Mở trình duyệt và truy cập:
+
+```text
+http://127.0.0.1:5000
+```
+
+
+

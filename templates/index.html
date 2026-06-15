@@ -1,60 +1,65 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dự đoán Bệnh Tim — Heart Disease Prediction</title>
-    <meta name="description" content="Ứng dụng dự đoán nguy cơ mắc bệnh tim dựa trên dữ liệu sức khỏe cá nhân sử dụng Machine Learning." />
+    <meta name="description"
+        content="Ứng dụng dự đoán nguy cơ mắc bệnh tim dựa trên dữ liệu sức khỏe cá nhân sử dụng Machine Learning." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
     <style>
         /* ============================================
            CSS Reset & Variables
            ============================================ */
-        *, *::before, *::after {
+        *,
+        *::before,
+        *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
         :root {
-            --bg-primary: #0a0e1a;
-            --bg-secondary: #111827;
-            --bg-card: rgba(17, 24, 39, 0.65);
-            --bg-card-hover: rgba(24, 34, 56, 0.75);
-            --border-glass: rgba(255, 255, 255, 0.08);
-            --border-glow: rgba(99, 102, 241, 0.3);
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-card: rgba(255, 255, 255, 0.8);
+            --bg-card-hover: rgba(255, 255, 255, 0.95);
+            --border-glass: rgba(15, 23, 42, 0.08);
+            --border-glow: rgba(99, 102, 241, 0.2);
 
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
             --text-muted: #64748b;
-            --text-label: #cbd5e1;
+            --text-label: #334155;
 
-            --accent-indigo: #6366f1;
-            --accent-indigo-light: #818cf8;
-            --accent-purple: #a78bfa;
-            --accent-cyan: #22d3ee;
+            --accent-indigo: #4f46e5;
+            --accent-indigo-light: #6366f1;
+            --accent-purple: #8b5cf6;
+            --accent-cyan: #06b6d4;
 
-            --success: #10b981;
-            --success-bg: rgba(16, 185, 129, 0.1);
-            --success-border: rgba(16, 185, 129, 0.3);
+            --success: #059669;
+            --success-bg: rgba(5, 150, 105, 0.08);
+            --success-border: rgba(5, 150, 105, 0.2);
 
-            --danger: #ef4444;
-            --danger-bg: rgba(239, 68, 68, 0.1);
-            --danger-border: rgba(239, 68, 68, 0.3);
+            --danger: #dc2626;
+            --danger-bg: rgba(220, 38, 38, 0.08);
+            --danger-border: rgba(220, 38, 38, 0.2);
 
-            --warning-bg: rgba(251, 191, 36, 0.08);
-            --warning-border: rgba(251, 191, 36, 0.25);
-            --warning-text: #fbbf24;
+            --warning-bg: rgba(217, 119, 6, 0.08);
+            --warning-border: rgba(217, 119, 6, 0.2);
+            --warning-text: #b45309;
 
             --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 16px;
             --radius-xl: 24px;
 
-            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px var(--border-glass);
-            --shadow-glow: 0 0 30px rgba(99, 102, 241, 0.15);
+            --shadow-card: 0 8px 32px rgba(15, 23, 42, 0.06), 0 0 0 1px var(--border-glass);
+            --shadow-glow: 0 0 30px rgba(99, 102, 241, 0.08);
 
             --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -81,9 +86,9 @@
             height: 100%;
             z-index: -1;
             background:
-                radial-gradient(ellipse 80% 50% at 20% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 60%),
-                radial-gradient(ellipse 60% 40% at 80% 80%, rgba(167, 139, 250, 0.1) 0%, transparent 60%),
-                radial-gradient(ellipse 50% 30% at 50% 50%, rgba(34, 211, 238, 0.05) 0%, transparent 60%);
+                radial-gradient(ellipse 80% 50% at 20% 20%, rgba(99, 102, 241, 0.06) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 80% 80%, rgba(167, 139, 250, 0.05) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 30% at 50% 50%, rgba(34, 211, 238, 0.03) 0%, transparent 60%);
         }
 
         .bg-grid {
@@ -94,8 +99,8 @@
             height: 100%;
             z-index: -1;
             background-image:
-                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+                linear-gradient(rgba(15, 23, 42, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15, 23, 42, 0.02) 1px, transparent 1px);
             background-size: 60px 60px;
         }
 
@@ -104,50 +109,92 @@
             position: fixed;
             border-radius: 50%;
             filter: blur(80px);
-            opacity: 0.4;
+            opacity: 0.3;
             animation: float 20s infinite ease-in-out;
             z-index: -1;
             pointer-events: none;
         }
+
         .orb-1 {
             width: 400px;
             height: 400px;
-            background: rgba(99, 102, 241, 0.15);
+            background: rgba(99, 102, 241, 0.08);
             top: -100px;
             left: -100px;
             animation-delay: 0s;
         }
+
         .orb-2 {
             width: 300px;
             height: 300px;
-            background: rgba(167, 139, 250, 0.12);
+            background: rgba(167, 139, 250, 0.06);
             bottom: -50px;
             right: -50px;
             animation-delay: -7s;
         }
+
         .orb-3 {
             width: 200px;
             height: 200px;
-            background: rgba(34, 211, 238, 0.1);
+            background: rgba(34, 211, 238, 0.04);
             top: 50%;
             left: 50%;
             animation-delay: -14s;
         }
 
         @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(30px, -40px) scale(1.05); }
-            50% { transform: translate(-20px, 20px) scale(0.95); }
-            75% { transform: translate(15px, 35px) scale(1.02); }
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            25% {
+                transform: translate(30px, -40px) scale(1.05);
+            }
+
+            50% {
+                transform: translate(-20px, 20px) scale(0.95);
+            }
+
+            75% {
+                transform: translate(15px, 35px) scale(1.02);
+            }
         }
 
         /* ============================================
            Layout
            ============================================ */
         .container {
-            max-width: 840px;
+            max-width: 1280px;
             margin: 0 auto;
             padding: 40px 20px 60px;
+        }
+
+        .app-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            align-items: start;
+        }
+
+        .layout-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .layout-main {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        @media (max-width: 1024px) {
+            .app-layout {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
         }
 
         /* ============================================
@@ -174,8 +221,15 @@
         }
 
         @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3); }
-            50% { box-shadow: 0 8px 40px rgba(99, 102, 241, 0.5); }
+
+            0%,
+            100% {
+                box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 8px 40px rgba(99, 102, 241, 0.5);
+            }
         }
 
         .header h1 {
@@ -302,9 +356,9 @@
             bottom: calc(100% + 8px);
             left: 50%;
             transform: translateX(-50%) scale(0.9);
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-glass);
-            color: var(--text-secondary);
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ffffff;
             font-size: 0.72rem;
             font-weight: 400;
             padding: 8px 12px;
@@ -316,7 +370,7 @@
             opacity: 0;
             transition: var(--transition-fast);
             z-index: 100;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.15);
         }
 
         .tooltip-icon:hover::after {
@@ -334,8 +388,8 @@
             font-size: 0.9rem;
             font-weight: 400;
             color: var(--text-primary);
-            background: rgba(15, 23, 42, 0.6);
-            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.8);
+            border: 1.5px solid rgba(15, 23, 42, 0.12);
             border-radius: var(--radius-sm);
             outline: none;
             transition: var(--transition-fast);
@@ -349,20 +403,20 @@
 
         .form-input:hover,
         .form-select:hover {
-            border-color: rgba(255, 255, 255, 0.15);
-            background: rgba(15, 23, 42, 0.8);
+            border-color: rgba(15, 23, 42, 0.2);
+            background: rgba(255, 255, 255, 1);
         }
 
         .form-input:focus,
         .form-select:focus {
             border-color: var(--accent-indigo);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
-            background: rgba(15, 23, 42, 0.9);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08);
+            background: rgba(255, 255, 255, 1);
         }
 
         .form-select {
             cursor: pointer;
-            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2394a3b8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 14px center;
             padding-right: 36px;
@@ -416,7 +470,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, transparent 60%);
             opacity: 0;
             transition: var(--transition-fast);
         }
@@ -466,14 +520,16 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         /* ============================================
            Result Card
            ============================================ */
         .result-section {
-            margin-top: 32px;
+            margin-top: 10px;
             animation: fadeInUp 0.6s var(--transition-spring) both;
         }
 
@@ -482,11 +538,20 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-radius: var(--radius-xl);
-            padding: 36px;
+            padding: 34px 28px;
             box-shadow: var(--shadow-card);
             text-align: center;
             position: relative;
             overflow: hidden;
+            height: 350px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .result-card.placeholder {
+            border: 1.5px dashed rgba(15, 23, 42, 0.15);
+            background: rgba(15, 23, 42, 0.02);
         }
 
         .result-card::before {
@@ -513,21 +578,31 @@
         }
 
         .result-emoji {
-            font-size: 56px;
-            margin-bottom: 16px;
+            font-size: 60px;
+            margin-bottom: 14px;
             animation: bounceIn 0.6s ease-out;
         }
 
         @keyframes bounceIn {
-            0% { transform: scale(0); opacity: 0; }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); opacity: 1; }
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         .result-title {
-            font-size: 1.5rem;
+            font-size: 1.85rem;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             letter-spacing: -0.02em;
         }
 
@@ -541,14 +616,15 @@
 
         .result-message {
             color: var(--text-secondary);
-            font-size: 0.95rem;
-            margin-bottom: 28px;
+            font-size: 0.9rem;
+            margin-bottom: 24px;
         }
 
         /* Probability bar */
         .prob-wrapper {
-            max-width: 400px;
+            max-width: 480px;
             margin: 0 auto 12px;
+            width: 100%;
         }
 
         .prob-header {
@@ -570,20 +646,25 @@
             font-variant-numeric: tabular-nums;
         }
 
-        .result-card.positive .prob-value { color: var(--danger); }
-        .result-card.negative .prob-value { color: var(--success); }
+        .result-card.positive .prob-value {
+            color: var(--danger);
+        }
+
+        .result-card.negative .prob-value {
+            color: var(--success);
+        }
 
         .prob-track {
             width: 100%;
-            height: 10px;
-            background: rgba(255, 255, 255, 0.06);
-            border-radius: 5px;
+            height: 12px;
+            background: rgba(15, 23, 42, 0.08);
+            border-radius: 6px;
             overflow: hidden;
         }
 
         .prob-bar {
             height: 100%;
-            border-radius: 5px;
+            border-radius: 6px;
             transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
             width: 0;
         }
@@ -640,13 +721,27 @@
            Animations
            ============================================ */
         @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(24px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Staggered animation for form groups */
@@ -654,11 +749,25 @@
             animation: fadeInUp 0.5s ease-out both;
         }
 
-        .form-card .form-group:nth-child(1) { animation-delay: 0.3s; }
-        .form-card .form-group:nth-child(2) { animation-delay: 0.35s; }
-        .form-card .form-group:nth-child(3) { animation-delay: 0.4s; }
-        .form-card .form-group:nth-child(4) { animation-delay: 0.45s; }
-        .form-card .form-group:nth-child(5) { animation-delay: 0.5s; }
+        .form-card .form-group:nth-child(1) {
+            animation-delay: 0.3s;
+        }
+
+        .form-card .form-group:nth-child(2) {
+            animation-delay: 0.35s;
+        }
+
+        .form-card .form-group:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .form-card .form-group:nth-child(4) {
+            animation-delay: 0.45s;
+        }
+
+        .form-card .form-group:nth-child(5) {
+            animation-delay: 0.5s;
+        }
 
         /* ============================================
            Footer
@@ -703,8 +812,157 @@
                 padding: 28px 20px;
             }
         }
+
+        /* ============================================
+           Info Accordion Section
+           ============================================ */
+        .info-section {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-xl);
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease-out 0.1s both;
+        }
+
+        .info-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 24px 24px 12px;
+            border-bottom: none;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .accordion-icon {
+            font-size: 1.5rem;
+        }
+
+        .info-body {
+            padding: 24px 24px 28px;
+        }
+
+        .info-intro {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(15, 23, 42, 0.06);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            transition: var(--transition-fast);
+        }
+
+        .info-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+            border-color: rgba(15, 23, 42, 0.1);
+        }
+
+        .info-card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .info-card-header h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .info-card p {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* Color themes for cards */
+        .info-card.purple .card-icon {
+            color: var(--accent-purple);
+        }
+
+        .info-card.red .card-icon {
+            color: var(--danger);
+        }
+
+        .info-card.blue .card-icon {
+            color: var(--accent-indigo-light);
+        }
+
+        .info-card.orange .card-icon {
+            color: #ea580c;
+        }
+
+        .info-card.indigo .card-icon {
+            color: var(--accent-indigo);
+        }
+
+        .info-card.green .card-icon {
+            color: var(--success);
+        }
+
+        .info-card.cyan .card-icon {
+            color: #0891b2;
+        }
+
+        .result-explanation {
+            border-top: 1px solid var(--border-glass);
+            padding-top: 20px;
+        }
+
+        .result-explanation h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .result-explanation ul {
+            list-style: none;
+            padding-left: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .result-explanation li {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            position: relative;
+            padding-left: 16px;
+        }
+
+        .result-explanation li::before {
+            content: "•";
+            color: var(--accent-indigo);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+            position: absolute;
+            left: 8px;
+        }
     </style>
 </head>
+
 <body>
     <!-- Background effects -->
     <div class="bg-gradient"></div>
@@ -721,191 +979,328 @@
             <p>Nhập thông tin sức khỏe của bạn để đánh giá nguy cơ mắc bệnh tim bằng AI</p>
         </header>
 
-        <!-- Form -->
-        <form id="predict-form" class="form-card" autocomplete="off">
+        <div class="app-layout">
+            <!-- Left Side: Guide -->
+            <aside class="layout-sidebar">
+                <!-- Collapsible Info Section -->
+                <section class="info-section">
+                    <div class="info-header">
+                        <span class="accordion-icon">💡</span>
+                        <span>Hướng dẫn chi tiết</span>
+                    </div>
+                    <div class="info-body">
 
-            <!-- Section 1: Personal Information -->
-            <div class="section-title">
-                <div class="section-icon">👤</div>
-                <h2>Thông tin cá nhân</h2>
+                        <div class="info-grid">
+                            <div class="info-card purple">
+                                <div class="info-card-header">
+                                    <span class="card-icon">👤</span>
+                                    <h3>Tuổi (age)</h3>
+                                </div>
+                                <p>Tuổi từ 1 - 120. Tuổi càng cao nguy cơ xơ cứng mạch vành càng lớn.</p>
+                            </div>
+                            <div class="info-card purple">
+                                <div class="info-card-header">
+                                    <span class="card-icon">👤</span>
+                                    <h3>Giới tính (sex)</h3>
+                                </div>
+                                <p>Giới tính sinh học. Nam giới thường có nguy cơ cao ở tuổi trẻ; nữ giới tăng nguy cơ
+                                    sau mãn kinh.</p>
+                            </div>
+                            <div class="info-card red">
+                                <div class="info-card-header">
+                                    <span class="card-icon">💔</span>
+                                    <h3>Loại đau ngực (chest_pain)</h3>
+                                </div>
+                                <p>Đau điển hình (do tim), đau không điển hình, đau không do tim (cơ/dạ dày), hoặc không
+                                    triệu chứng.</p>
+                            </div>
+                            <div class="info-card blue">
+                                <div class="info-card-header">
+                                    <span class="card-icon">🩺</span>
+                                    <h3>Huyết áp nghỉ (restbps)</h3>
+                                </div>
+                                <p>Huyết áp tâm thu đo lúc nghỉ ngơi (mmHg). Chỉ số cao kéo dài làm tăng áp lực lên cơ
+                                    tim.</p>
+                            </div>
+                            <div class="info-card red">
+                                <div class="info-card-header">
+                                    <span class="card-icon">💖</span>
+                                    <h3>Nhịp tim tối đa (thalach)</h3>
+                                </div>
+                                <p>Tần số tim cao nhất đạt được khi vận động gắng sức (bpm). Nhịp tim gắng sức thấp có
+                                    thể cảnh báo tim yếu.</p>
+                            </div>
+                            <div class="info-card orange">
+                                <div class="info-card-header">
+                                    <span class="card-icon">🏃</span>
+                                    <h3>Đau ngực khi tập (exang)</h3>
+                                </div>
+                                <p>Cơn đau thắt ngực xuất hiện khi vận động nặng, phản ánh tình trạng cơ tim thiếu oxy
+                                    tạm thời.</p>
+                            </div>
+                            <div class="info-card blue">
+                                <div class="info-card-header">
+                                    <span class="card-icon">📈</span>
+                                    <h3>Chỉ số Oldpeak (oldpeak)</h3>
+                                </div>
+                                <p>Mức độ chênh xuống của đoạn ST trên điện tâm đồ (ECG) khi tập so với nghỉ. Chỉ số
+                                    càng cao gợi ý thiếu máu tim nặng.</p>
+                            </div>
+                            <div class="info-card indigo">
+                                <div class="info-card-header">
+                                    <span class="card-icon">📐</span>
+                                    <h3>Độ dốc đoạn ST (slope)</h3>
+                                </div>
+                                <p>Đoạn ST lúc gắng sức đỉnh điểm: Dốc lên (bình thường), Phẳng (nghi ngờ), hoặc Dốc
+                                    xuống (nguy cơ cao).</p>
+                            </div>
+                            <div class="info-card green">
+                                <div class="info-card-header">
+                                    <span class="card-icon">🧪</span>
+                                    <h3>Cholesterol (chol)</h3>
+                                </div>
+                                <p>Nồng độ cholesterol toàn phần trong máu (mg/dl). Lượng dư thừa gây hình thành mảng xơ
+                                    vữa.</p>
+                            </div>
+                            <div class="info-card red">
+                                <div class="info-card-header">
+                                    <span class="card-icon">🩸</span>
+                                    <h3>Đường huyết đói (fbs)</h3>
+                                </div>
+                                <p>Đường huyết lúc đói > 120 mg/dl (khoảng 6.7 mmol/L). Bệnh tiểu đường thúc đẩy xơ vữa
+                                    động mạch.</p>
+                            </div>
+                            <div class="info-card cyan">
+                                <div class="info-card-header">
+                                    <span class="card-icon">📊</span>
+                                    <h3>ECG lúc nghỉ (restecg)</h3>
+                                </div>
+                                <p>Điện tâm đồ lúc nghỉ: bình thường, bất thường sóng ST-T, hoặc phì đại cơ thất trái
+                                    (do cao huyết áp lâu năm).</p>
+                            </div>
+                            <div class="info-card red">
+                                <div class="info-card-header">
+                                    <span class="card-icon">🩸</span>
+                                    <h3>Số mạch máu lớn (ca)</h3>
+                                </div>
+                                <p>Số lượng mạch máu chính (0-4) nhìn rõ khi chụp nhuộm cản quang. Số mạch thông ít gợi
+                                    ý hẹp mạch vành đáng kể.</p>
+                            </div>
+                            <div class="info-card purple">
+                                <div class="info-card-header">
+                                    <span class="card-icon">🧬</span>
+                                    <h3>Thalassemia (thal)</h3>
+                                </div>
+                                <p>Kết quả xạ hình: bình thường, khuyết tật cố định (sẹo cơ tim cũ), hoặc khuyết tật đảo
+                                    ngược (thiếu máu khi gắng sức).</p>
+                            </div>
+                        </div>
+
+                        <div class="result-explanation">
+                            <h4>💡 Giải thích kết quả dự đoán:</h4>
+                            <ul>
+                                <li><strong>Nguy cơ thấp (Màu xanh):</strong> Các thông số nằm trong giới hạn an toàn
+                                    hoặc ít biểu hiện bệnh lý tim mạch.</li>
+                                <li><strong>Nguy cơ cao (Màu đỏ):</strong> Các chỉ số có độ tương đồng cao với nhóm bệnh
+                                    nhân động mạch vành. Hãy tham vấn bác sĩ.</li>
+                            </ul>
+                        </div>
+
+                        <div class="disclaimer">
+                            <span class="disclaimer-icon">⚕️</span>
+                            <p>Kết quả chỉ mang tính tham khảo dựa trên mô hình Machine Learning.
+                                Đây <strong>không phải</strong> chẩn đoán y khoa. Vui lòng đến cơ sở y tế
+                                để được khám và tư vấn bởi bác sĩ chuyên khoa.</p>
+                        </div>
+                    </div>
+                </section>
+            </aside>
+
+            <!-- Right Side: Form & Result -->
+            <div class="layout-main">
+                <!-- Form -->
+                <form id="predict-form" class="form-card" autocomplete="off">
+
+                    <!-- Section 1: Personal Information -->
+                    <div class="section-title">
+                        <div class="section-icon">👤</div>
+                        <h2>Thông tin cá nhân</h2>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="age">
+                                Tuổi
+                            </label>
+                            <input class="form-input" type="number" id="age" name="age" min="1" max="120"
+                                placeholder="VD: 52" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="sex">
+                                Giới tính
+                            </label>
+                            <select class="form-select" id="sex" name="sex" required>
+                                <option value="" disabled selected>— Chọn —</option>
+                                <option value="0">Nữ</option>
+                                <option value="1">Nam</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Cardiovascular -->
+                    <div class="section-title">
+                        <div class="section-icon">🫀</div>
+                        <h2>Thông số tim mạch</h2>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="chest_pain">
+                                Loại đau ngực
+                            </label>
+                            <select class="form-select" id="chest_pain" name="chest_pain" required>
+                                <option value="" disabled selected>— Chọn —</option>
+                                <option value="0">Đau thắt ngực điển hình (Typical)</option>
+                                <option value="1">Đau thắt ngực không điển hình (Atypical)</option>
+                                <option value="2">Đau không do tim (Non-anginal)</option>
+                                <option value="3">Không triệu chứng (Asymptomatic)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="restbps">
+                                Huyết áp nghỉ <span class="hint">(mmHg)</span>
+                            </label>
+                            <input class="form-input" type="number" id="restbps" name="restbps" min="50" max="300"
+                                placeholder="VD: 125" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="thalach">
+                                Nhịp tim tối đa <span class="hint">(bpm)</span>
+                            </label>
+                            <input class="form-input" type="number" id="thalach" name="thalach" min="40" max="250"
+                                placeholder="VD: 168" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="exang">
+                                Đau ngực khi tập
+                            </label>
+                            <select class="form-select" id="exang" name="exang" required>
+                                <option value="" disabled selected>— Chọn —</option>
+                                <option value="0">Không</option>
+                                <option value="1">Có</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="oldpeak">
+                                ST Depression (oldpeak)
+                            </label>
+                            <input class="form-input" type="number" id="oldpeak" name="oldpeak" min="0" max="10"
+                                step="0.1" placeholder="VD: 1.0" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="slope">
+                                Slope ST Segment
+                            </label>
+                            <select class="form-select" id="slope" name="slope" required>
+                                <option value="" disabled selected>— Chọn —</option>
+                                <option value="0">Dốc lên (Upsloping)</option>
+                                <option value="1">Phẳng (Flat)</option>
+                                <option value="2">Dốc xuống (Downsloping)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Lab Results -->
+                    <div class="section-title">
+                        <div class="section-icon">🔬</div>
+                        <h2>Kết quả xét nghiệm</h2>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="chol">
+                                Cholesterol <span class="hint">(mg/dl)</span>
+                            </label>
+                            <input class="form-input" type="number" id="chol" name="chol" min="50" max="800"
+                                placeholder="VD: 212" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="fbs">
+                                Đường huyết lúc đói
+                            </label>
+                            <select class="form-select" id="fbs" name="fbs" required>
+                                <option value="" disabled selected>— Chọn —</option>
+                                <option value="0">≤ 120 mg/dl</option>
+                                <option value="1">> 120 mg/dl</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="restecg">
+                                Kết quả ECG nghỉ
+                            </label>
+                            <select class="form-select" id="restecg" name="restecg" required>
+                                <option value="" disabled selected>— Chọn —</option>
+                                <option value="0">Bình thường</option>
+                                <option value="1">Bất thường sóng ST-T</option>
+                                <option value="2">Phì đại thất trái (LVH)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="ca">
+                                Số mạch máu lớn (ca)
+                            </label>
+                            <select class="form-select" id="ca" name="ca" required>
+                                <option value="" disabled selected>— Chọn —</option>
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="thal">
+                                Thalassemia
+                            </label>
+                            <select class="form-select" id="thal" name="thal" required>
+                                <option value="" disabled selected>— Chọn —</option>
+                                <option value="0">Không rõ</option>
+                                <option value="1">Bình thường (Normal)</option>
+                                <option value="2">Khuyết cố định (Fixed Defect)</option>
+                                <option value="3">Khuyết đảo ngược (Reversible Defect)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="submit-wrapper">
+                        <button type="submit" class="btn-predict" id="btn-predict">
+                            <span class="btn-icon">🔍</span>
+                            <span class="btn-text">Dự đoán ngay</span>
+                            <div class="spinner"></div>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Result Section -->
+                <div id="result-section">
+                    <div class="result-section">
+                        <div class="result-card placeholder" id="result-card-element">
+                            <div class="result-emoji">⏳</div>
+                            <div class="result-title" style="color: var(--text-secondary);">Kết quả dự đoán</div>
+                            <div class="result-message" style="margin-bottom: 0;">Vui lòng nhập thông tin bên trên để xem kết quả của mình</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-grid">
-                <div class="form-group">
-                    <label class="form-label" for="age">
-                        Tuổi
-                        <span class="tooltip-icon" data-tip="Tuổi của bạn (1 – 120)">?</span>
-                    </label>
-                    <input class="form-input" type="number" id="age" name="age"
-                           min="1" max="120" placeholder="VD: 52" required />
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="sex">
-                        Giới tính
-                    </label>
-                    <select class="form-select" id="sex" name="sex" required>
-                        <option value="" disabled selected>— Chọn —</option>
-                        <option value="0">Nữ</option>
-                        <option value="1">Nam</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Section 2: Cardiovascular -->
-            <div class="section-title">
-                <div class="section-icon">🫀</div>
-                <h2>Thông số tim mạch</h2>
-            </div>
-            <div class="form-grid">
-                <div class="form-group">
-                    <label class="form-label" for="chest_pain">
-                        Loại đau ngực
-                        <span class="tooltip-icon" data-tip="0: Typical Angina, 1: Atypical Angina, 2: Non-anginal Pain, 3: Asymptomatic">?</span>
-                    </label>
-                    <select class="form-select" id="chest_pain" name="chest_pain" required>
-                        <option value="" disabled selected>— Chọn —</option>
-                        <option value="0">Đau thắt ngực điển hình (Typical)</option>
-                        <option value="1">Đau thắt ngực không điển hình (Atypical)</option>
-                        <option value="2">Đau không do tim (Non-anginal)</option>
-                        <option value="3">Không triệu chứng (Asymptomatic)</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="restbps">
-                        Huyết áp nghỉ <span class="hint">(mmHg)</span>
-                        <span class="tooltip-icon" data-tip="Huyết áp tâm thu khi nghỉ ngơi (50 – 300 mmHg)">?</span>
-                    </label>
-                    <input class="form-input" type="number" id="restbps" name="restbps"
-                           min="50" max="300" placeholder="VD: 125" required />
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="thalach">
-                        Nhịp tim tối đa <span class="hint">(bpm)</span>
-                        <span class="tooltip-icon" data-tip="Nhịp tim tối đa đạt được khi tập luyện (40 – 250 bpm)">?</span>
-                    </label>
-                    <input class="form-input" type="number" id="thalach" name="thalach"
-                           min="40" max="250" placeholder="VD: 168" required />
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="exang">
-                        Đau ngực khi tập
-                        <span class="tooltip-icon" data-tip="Exercise-induced angina: cơn đau ngực xuất hiện khi gắng sức">?</span>
-                    </label>
-                    <select class="form-select" id="exang" name="exang" required>
-                        <option value="" disabled selected>— Chọn —</option>
-                        <option value="0">Không</option>
-                        <option value="1">Có</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="oldpeak">
-                        ST Depression (oldpeak)
-                        <span class="tooltip-icon" data-tip="Mức chênh lệch ST trên ECG khi tập so với nghỉ (0.0 – 10.0)">?</span>
-                    </label>
-                    <input class="form-input" type="number" id="oldpeak" name="oldpeak"
-                           min="0" max="10" step="0.1" placeholder="VD: 1.0" required />
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="slope">
-                        Slope ST Segment
-                        <span class="tooltip-icon" data-tip="Độ dốc đoạn ST trên ECG: 0: Upsloping, 1: Flat, 2: Downsloping">?</span>
-                    </label>
-                    <select class="form-select" id="slope" name="slope" required>
-                        <option value="" disabled selected>— Chọn —</option>
-                        <option value="0">Dốc lên (Upsloping)</option>
-                        <option value="1">Phẳng (Flat)</option>
-                        <option value="2">Dốc xuống (Downsloping)</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Section 3: Lab Results -->
-            <div class="section-title">
-                <div class="section-icon">🔬</div>
-                <h2>Kết quả xét nghiệm</h2>
-            </div>
-            <div class="form-grid">
-                <div class="form-group">
-                    <label class="form-label" for="chol">
-                        Cholesterol <span class="hint">(mg/dl)</span>
-                        <span class="tooltip-icon" data-tip="Nồng độ cholesterol toàn phần trong máu (50 – 800 mg/dl)">?</span>
-                    </label>
-                    <input class="form-input" type="number" id="chol" name="chol"
-                           min="50" max="800" placeholder="VD: 212" required />
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="fbs">
-                        Đường huyết lúc đói > 120
-                        <span class="tooltip-icon" data-tip="Fasting blood sugar > 120 mg/dl">?</span>
-                    </label>
-                    <select class="form-select" id="fbs" name="fbs" required>
-                        <option value="" disabled selected>— Chọn —</option>
-                        <option value="0">Không (≤ 120 mg/dl)</option>
-                        <option value="1">Có (> 120 mg/dl)</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="restecg">
-                        Kết quả ECG nghỉ
-                        <span class="tooltip-icon" data-tip="0: Bình thường, 1: Bất thường sóng ST-T, 2: Phì đại thất trái">?</span>
-                    </label>
-                    <select class="form-select" id="restecg" name="restecg" required>
-                        <option value="" disabled selected>— Chọn —</option>
-                        <option value="0">Bình thường</option>
-                        <option value="1">Bất thường sóng ST-T</option>
-                        <option value="2">Phì đại thất trái (LVH)</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="ca">
-                        Số mạch máu lớn (ca)
-                        <span class="tooltip-icon" data-tip="Số mạch máu lớn nhuộm bằng fluoroscopy (0 – 4)">?</span>
-                    </label>
-                    <select class="form-select" id="ca" name="ca" required>
-                        <option value="" disabled selected>— Chọn —</option>
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="thal">
-                        Thalassemia
-                        <span class="tooltip-icon" data-tip="0: Unknown, 1: Normal, 2: Fixed Defect, 3: Reversible Defect">?</span>
-                    </label>
-                    <select class="form-select" id="thal" name="thal" required>
-                        <option value="" disabled selected>— Chọn —</option>
-                        <option value="0">Không rõ</option>
-                        <option value="1">Bình thường (Normal)</option>
-                        <option value="2">Khuyết cố định (Fixed Defect)</option>
-                        <option value="3">Khuyết đảo ngược (Reversible Defect)</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Submit -->
-            <div class="submit-wrapper">
-                <button type="submit" class="btn-predict" id="btn-predict">
-                    <span class="btn-icon">🔍</span>
-                    <span class="btn-text">Dự đoán ngay</span>
-                    <div class="spinner"></div>
-                </button>
-            </div>
-        </form>
-
-        <!-- Result (hidden initially) -->
-        <div id="result-section"></div>
+        </div>
     </main>
 
     <footer class="footer">
@@ -929,9 +1324,6 @@
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            // Clear previous results
-            resultSection.innerHTML = '';
-
             // Clear invalid states
             document.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
 
@@ -952,11 +1344,28 @@
                 data[field] = el.type === 'number' ? parseFloat(val) : parseInt(val, 10);
             }
 
+            const card = document.getElementById('result-card-element');
+
             if (hasError) {
-                resultSection.innerHTML = `
-                    <div class="error-toast">⚠️ Vui lòng điền đầy đủ tất cả các trường.</div>
-                `;
+                if (card) {
+                    card.className = 'result-card placeholder';
+                    card.innerHTML = `
+                        <div class="result-emoji">⚠️</div>
+                        <div class="result-title" style="color: var(--text-secondary);">Nhập thiếu thông tin</div>
+                        <div class="result-message" style="margin-bottom: 0;">Vui lòng điền đầy đủ tất cả các trường.</div>
+                    `;
+                }
                 return;
+            }
+
+            // Show loading state inside the card without changing card size
+            if (card) {
+                card.className = 'result-card placeholder';
+                card.innerHTML = `
+                    <div class="result-emoji">⏳</div>
+                    <div class="result-title" style="color: var(--text-secondary);">Đang tính toán...</div>
+                    <div class="result-message" style="margin-bottom: 0;">Hệ thống đang phân tích các chỉ số sức khỏe của bạn.</div>
+                `;
             }
 
             // Show loading
@@ -979,9 +1388,14 @@
                 renderResult(result);
 
             } catch (err) {
-                resultSection.innerHTML = `
-                    <div class="error-toast">❌ ${err.message}</div>
-                `;
+                if (card) {
+                    card.className = 'result-card placeholder';
+                    card.innerHTML = `
+                        <div class="result-emoji">❌</div>
+                        <div class="result-title" style="color: var(--danger);">Đã xảy ra lỗi</div>
+                        <div class="result-message" style="margin-bottom: 0;">${err.message}</div>
+                    `;
+                }
             } finally {
                 btnPredict.classList.remove('loading');
                 btnPredict.disabled = false;
@@ -993,35 +1407,29 @@
             const probPercent = (result.probability * 100).toFixed(1);
             const cardClass = isPositive ? 'positive' : 'negative';
             const emoji = isPositive ? '⚠️' : '💚';
-            const title = isPositive ? 'Có nguy cơ mắc bệnh tim' : 'Không có nguy cơ mắc bệnh tim';
+            const title = isPositive ? 'Nguy cơ cao' : 'Nguy cơ thấp';
             const subtitle = isPositive
                 ? 'Dựa trên dữ liệu bạn cung cấp, mô hình AI đánh giá bạn có nguy cơ mắc bệnh tim. Hãy tham khảo ý kiến bác sĩ để được tư vấn chính xác.'
                 : 'Dựa trên dữ liệu bạn cung cấp, mô hình AI đánh giá bạn không có nguy cơ mắc bệnh tim. Hãy tiếp tục duy trì lối sống lành mạnh!';
 
-            resultSection.innerHTML = `
-                <div class="result-section">
-                    <div class="result-card ${cardClass}">
-                        <div class="result-emoji">${emoji}</div>
-                        <div class="result-title">${title}</div>
-                        <div class="result-message">${subtitle}</div>
-                        <div class="prob-wrapper">
-                            <div class="prob-header">
-                                <span class="prob-label">Xác suất mắc bệnh</span>
-                                <span class="prob-value">${probPercent}%</span>
-                            </div>
-                            <div class="prob-track">
-                                <div class="prob-bar" id="prob-bar"></div>
-                            </div>
+            const card = document.getElementById('result-card-element');
+            if (card) {
+                card.className = `result-card ${cardClass}`;
+                card.innerHTML = `
+                    <div class="result-emoji">${emoji}</div>
+                    <div class="result-title">${title}</div>
+                    <div class="result-message">${subtitle}</div>
+                    <div class="prob-wrapper">
+                        <div class="prob-header">
+                            <span class="prob-label">Xác suất mắc bệnh</span>
+                            <span class="prob-value">${probPercent}%</span>
                         </div>
-                        <div class="disclaimer">
-                            <span class="disclaimer-icon">⚕️</span>
-                            <p>Kết quả chỉ mang tính tham khảo dựa trên mô hình Machine Learning. 
-                            Đây <strong>không phải</strong> chẩn đoán y khoa. Vui lòng đến cơ sở y tế 
-                            để được khám và tư vấn bởi bác sĩ chuyên khoa.</p>
+                        <div class="prob-track">
+                            <div class="prob-bar" id="prob-bar"></div>
                         </div>
                     </div>
-                </div>
-            `;
+                `;
+            }
 
             // Animate probability bar
             requestAnimationFrame(() => {
@@ -1034,7 +1442,9 @@
             });
 
             // Smooth scroll to result
-            resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            if (card) {
+                card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
         }
 
         /* Interactive: remove invalid state on input */
@@ -1044,4 +1454,5 @@
         });
     </script>
 </body>
+
 </html>
